@@ -106,3 +106,5 @@ dist
 credentials/*
 
 package-lock.json
+
+data/app.db
