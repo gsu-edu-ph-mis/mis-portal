@@ -67,6 +67,9 @@ env.addFilter('mobile_num', (mobileNo) => {
     mobileNo.splice(8, 0, ' ');
     return lodash.join(mobileNo, '');
 });
+env.addFilter('join', (value, sep) => {
+    return lodash.join(value, sep);
+});
 
 //// Export
 module.exports = env;

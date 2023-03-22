@@ -1,12 +1,12 @@
 {% extends "document.html" %}
 {% block body %}
     <div class="row">
-        <div id="vApp" v-cloak class="col-md-12 ml-auto mr-auto pt-3 pb-3 pt-md-5 pb-md-5" style="max-width:800px">
+        <div id="vApp" v-cloak v-bind:data-pending="pending" class="col-md-12 ml-auto mr-auto pt-3 pb-3 pt-md-5 pb-md-5" style="max-width:800px">
             {% include 'parts/header.html' %}
             <div class=" p-md-4 p-3 bg-glass" style="min-width: 300px;">
                 <h1 class="text-center h4">Tarpaulin Design</h1>
                 <h2 class="text-center h6 mb-4">Request Form</h2>
-                <form action="">
+                <form ref="form" v-on:submit.prevent="onSubmit" action="" method="POST">
                     <div class="form-group text-right">
                         <div class="custom-control custom-switch">
                             <input v-model="help" type="checkbox" class="custom-control-input" id="help">
@@ -16,32 +16,32 @@
                     <div class="form-group">
                         <label for="purpose" class="mr-1">Purpose</label>
                         <em v-bind:class="showHelp"><small>Para sa anu ang tarp?</small></em>
-                        <input id="purpose" type="text" class="form-control" required>
+                        <input v-model="purpose" name="purpose" id="purpose" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="head" class="mr-1">Date Needed</label>
+                        <label for="dateStart" class="mr-1">Date Needed</label>
                         <em v-bind:class="showHelp"><small>San-o kinahanglan?</small></em>
-                        <input id="head" type="date" class="form-control" required>
+                        <input v-model="dateStart" name="dateStart" id="dateStart" type="date" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="content" class="mr-1">Content</label>
                         <em v-if="!help"><small>Write the textual content of your tarp.</small></em>
                         <em v-bind:class="showHelp"><small>Isulat ang unod sang tarp.</small></em>
-                        <textarea name="content" id="content" class="form-control" required></textarea>
+                        <textarea v-model="content" name="content" id="content" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="instructions" class="mr-1">Description</label>
                         <em v-if="!help"><small>Describe the design that you want to achieve.</small></em>
                         <em v-bind:class="showHelp"><small>Anu ang itsura sang desenyo na gusto mo?</small></em>
-                        <textarea name="instructions" id="instructions" class="form-control" required></textarea>
+                        <textarea v-model="instructions" name="instructions" id="instructions" class="form-control" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="content">Dimension <em v-if="!help"><small>(Width and Height)</small></em><em
                                 v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em></label>
                         <div class="form-row align-items-center text-center">
                             <div class="col-md-5 d-flex">
-                                <input type="number" min="1" step="1" class="form-control" required placeholder="Width">
-                                <select name="" id="" class="form-control">
+                                <input v-model="width" name="width" type="number" min="1" step="1" class="form-control" required placeholder="Width">
+                                <select v-model="widthUnit" name="widthUnit" id="widthUnit" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
                                 </select>
@@ -50,8 +50,8 @@
                                 x
                             </div>
                             <div class="col-md-5 d-flex">
-                                <input type="number" min="1" step="1" class="form-control" required placeholder="Height">
-                                <select name="" id="" class="form-control">
+                                <input v-model="height" name="height" type="number" min="1" step="1" class="form-control" required placeholder="Height">
+                                <select v-model="heightUnit" name="heightUnit" id="height" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
                                 </select>
@@ -63,12 +63,12 @@
                     <div class="form-group">
                         <label for="requestor" class="mr-1">Requesting Person's Name</label>
                         <em v-bind:class="showHelp"><small>Ang pangalan sang naga patigayon.</small></em>
-                        <input id="requestor" type="text" class="form-control" required>
+                        <input v-model="requestor" name="requestor" id="requestor" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="department" class="mr-1">Department</label>
                         <em v-bind:class="showHelp"><small>Ang iya na departamento?</small></em>
-                        <input id="department" type="text" class="form-control" required>
+                        <input v-model="department" name="department" id="department" type="text" class="form-control" required>
                     </div>
                     <hr>
                     <h6 class="h6 mb-3"><span class="mr-2">Contact Information</span><em v-if="!help"><small>Please
@@ -76,12 +76,12 @@
                     <div class="form-group">
                         <label for="email" class="mr-1">Email</label>
                         <em v-bind:class="showHelp"><small>Aktibo na email.</small></em>
-                        <input id="email" type="email" class="form-control" required>
+                        <input v-model="email" name="email" id="email" type="email" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="fb" class="mr-1">Facebook or Messenger Name</label>
                         <em v-bind:class="showHelp"><small>FB ukon Messenger.</small></em>
-                        <input id="fb" type="fb" class="form-control" required>
+                        <input v-model="fb" name="fb" id="fb" type="fb" class="form-control" required>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-lg btn-primary">Submit Request</button>
@@ -97,13 +97,26 @@
     var vApp = new Vue({
         el: '#vApp',
         delimiters: ["${", "}"],
-        mixins: [
-        ],
+        mixins: [],
         data: {
+            errors: {
+                format: false,
+                date: false,
+            },
             pending: false,
-            help: true,
-            width: 8,
-            height: 4,
+            help: false,
+            purpose: '',
+            dateStart: '',
+            content: '',
+            instructions: '',
+            width: 4,
+            widthUnit: '',
+            height: 5,
+            heightUnit: '',
+            requestor: '',
+            department: '',
+            email: '',
+            fb: '',
         },
         computed: {
             showHelp: function () {
@@ -113,12 +126,23 @@
                 return 'no-help'
             }
         },
-        mounted: function(){
-            
+        mounted: function () {
+            this.purpose = 'Welcome Sec Popoy'
+            this.dateStart = '2023-03-22'
+            this.content = 'GSU welcomes CHED national.'
+            this.instructions = 'Welcome tarp with photo and greetings.'
+            this.width = 4
+            this.widthUnit = 'ft'
+            this.height = 5
+            this.heightUnit = 'ft'
+            this.requestor = 'Nico Amarilla'
+            this.department = 'MIS'
+            this.email = 'nico.amarilla@example.com'
+            this.fb = 'Nico Amarilla'
         },
         methods: {
             onSubmit: function () {
-                var me = this;
+                const me = this;
                 me.pending = true;
                 me.$nextTick(function () {
                     me.$refs.form.submit();

@@ -3,10 +3,12 @@
 //// External modules
 const express = require('express')
 const lodash = require('lodash')
+const flash = require('kisapmata')
 
 //// Core modules
 
 //// Modules
+const mailer = require('../mailer');
 const middlewares = require('../middlewares');
 
 // Router
@@ -22,12 +24,41 @@ router.get('/services/tarp', async (req, res, next) => {
         next(err);
     }
 });
+router.post('/services/tarp', async (req, res, next) => {
+    try {
+        let data = req.body
 
+        await mailer.sendTarpEmail(data)
+        res.redirect(`/services/thanks`)
+    } catch (err) {
+        next(err);
+    }
+});
 
 router.get('/services/video', async (req, res, next) => {
     try {
         let data = {}
         res.render('services/video.html', data);
+    } catch (err) {
+        next(err);
+    }
+});
+router.post('/services/video', async (req, res, next) => {
+    try {
+        let data = req.body
+        data.format = !Array.isArray(data.format) ? [data.format] : data.format
+
+        await mailer.sendVideoEmail(data)
+        res.redirect(`/services/thanks`)
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/services/thanks', async (req, res, next) => {
+    try {
+        let data = {}
+        res.render('services/thanks.html', data);
     } catch (err) {
         next(err);
     }

@@ -330,10 +330,14 @@ button.btn-eye[data-state="text"] svg:nth-child(2) {
     margin-bottom: 0;
 }
 
+[data-error="true"] {
+    color: red;
+}
+
 /* Floating */
 .floating-menu {
     z-index: 99;
-    position: absolute;
+    position: fixed;
     left: 15px;
     top: 15px;
 }
