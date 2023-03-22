@@ -1,0 +1,130 @@
+{% extends "document.html" %}
+{% block body %}
+    <div class="row">
+        <div id="vApp" v-cloak class="col-md-12 ml-auto mr-auto pt-3 pb-3 pt-md-5 pb-md-5" style="max-width:800px">
+            {% include 'parts/header.html' %}
+            <div class=" p-md-4 p-3 bg-glass" style="min-width: 300px;">
+                <h1 class="text-center h4">Tarpaulin Design</h1>
+                <h2 class="text-center h6 mb-4">Request Form</h2>
+                <form action="">
+                    <div class="form-group text-right">
+                        <div class="custom-control custom-switch">
+                            <input v-model="help" type="checkbox" class="custom-control-input" id="help">
+                            <label class="custom-control-label" for="help">Hiligaynon</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="purpose" class="mr-1">Purpose</label>
+                        <em v-bind:class="showHelp"><small>Para sa anu ang tarp?</small></em>
+                        <input id="purpose" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="head" class="mr-1">Date Needed</label>
+                        <em v-bind:class="showHelp"><small>San-o kinahanglan?</small></em>
+                        <input id="head" type="date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content" class="mr-1">Content</label>
+                        <em v-if="!help"><small>Write the textual content of your tarp.</small></em>
+                        <em v-bind:class="showHelp"><small>Isulat ang unod sang tarp.</small></em>
+                        <textarea name="content" id="content" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="instructions" class="mr-1">Description</label>
+                        <em v-if="!help"><small>Describe the design that you want to achieve.</small></em>
+                        <em v-bind:class="showHelp"><small>Anu ang itsura sang desenyo na gusto mo?</small></em>
+                        <textarea name="instructions" id="instructions" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Dimension <em v-if="!help"><small>(Width and Height)</small></em><em
+                                v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em></label>
+                        <div class="form-row align-items-center text-center">
+                            <div class="col-md-5 d-flex">
+                                <input type="number" min="1" step="1" class="form-control" required placeholder="Width">
+                                <select name="" id="" class="form-control">
+                                    <option value="ft">Feet</option>
+                                    <option value="inches">Inches</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 pl-3 pr-3">
+                                x
+                            </div>
+                            <div class="col-md-5 d-flex">
+                                <input type="number" min="1" step="1" class="form-control" required placeholder="Height">
+                                <select name="" id="" class="form-control">
+                                    <option value="ft">Feet</option>
+                                    <option value="inches">Inches</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6 class="h6">Requesting Office</h6>
+                    <div class="form-group">
+                        <label for="requestor" class="mr-1">Requesting Person's Name</label>
+                        <em v-bind:class="showHelp"><small>Ang pangalan sang naga patigayon.</small></em>
+                        <input id="requestor" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department" class="mr-1">Department</label>
+                        <em v-bind:class="showHelp"><small>Ang iya na departamento?</small></em>
+                        <input id="department" type="text" class="form-control" required>
+                    </div>
+                    <hr>
+                    <h6 class="h6 mb-3"><span class="mr-2">Contact Information</span><em v-if="!help"><small>Please
+                                provide a way for us to contact you.</small></em></h6>
+                    <div class="form-group">
+                        <label for="email" class="mr-1">Email</label>
+                        <em v-bind:class="showHelp"><small>Aktibo na email.</small></em>
+                        <input id="email" type="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fb" class="mr-1">Facebook or Messenger Name</label>
+                        <em v-bind:class="showHelp"><small>FB ukon Messenger.</small></em>
+                        <input id="fb" type="fb" class="form-control" required>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-primary">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    var vApp = new Vue({
+        el: '#vApp',
+        delimiters: ["${", "}"],
+        mixins: [
+        ],
+        data: {
+            pending: false,
+            help: true,
+            width: 8,
+            height: 4,
+        },
+        computed: {
+            showHelp: function () {
+                if (this.help) {
+                    return 'show-help'
+                }
+                return 'no-help'
+            }
+        },
+        mounted: function(){
+            
+        },
+        methods: {
+            onSubmit: function () {
+                var me = this;
+                me.pending = true;
+                me.$nextTick(function () {
+                    me.$refs.form.submit();
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

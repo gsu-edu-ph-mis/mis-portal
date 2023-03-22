@@ -1,0 +1,12 @@
+{
+  "app": {
+    "url": "https://mis.gsu.edu.ph"
+  },
+  "nunjucks": {
+    "loader": {
+      "watch": false,
+      "noCache": false
+    }
+  },
+  "loginDelay": 5000
+}

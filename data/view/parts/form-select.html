@@ -1,0 +1,6 @@
+
+<select name="{{name}}" id="{{name}}" v-model="{% if vModel %}{{vModel}}{% else %}{{name}}{% endif %}" class="form-control">
+    {% for option in options %}
+        <option value="{{option.value}}">{{option.text}}</option>
+    {% endfor %}
+</select>

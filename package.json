@@ -1,0 +1,41 @@
+{
+  "name": "mis-portal",
+  "version": "1.0.0",
+  "description": "MIS Online Services",
+  "main": "index.js",
+  "scripts": {
+    "dev": "set NODE_ENV=dev&& nodemon --ignore data/view/ --ignore data/public/ --ignore data/log/ --ignore data/upload/ index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gsu-edu-ph-mis/mis-portal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gsu-edu-ph-mis/mis-portal/issues"
+  },
+  "homepage": "https://github.com/gsu-edu-ph-mis/mis-portal#readme",
+  "dependencies": {
+    "acrb": "^0.1.0",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-session-sequelize": "^2.3.0",
+    "google-auth-library": "^8.7.0",
+    "kisapmata": "^1.2.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "nunjucks": "^3.2.3",
+    "nunjucks-filters": "github:kosinix/nunjucks-filters",
+    "pigura": "^1.0.1",
+    "sequelize": "^6.29.2",
+    "sqlite3": "^5.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
