@@ -243,6 +243,9 @@ module.exports = {
                 title = words.join(' - ')
                 if (title) {
                     res.locals.title = `${title} | ${req.app.locals.app.title} `;
+                } else {
+                    res.locals.title = `${req.app.locals.app.title}`;
+
                 }
             }
             next();
