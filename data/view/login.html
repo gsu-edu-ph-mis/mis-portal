@@ -6,7 +6,8 @@
         <div class="col-md-5 ml-auto mr-auto pt-5 login-height">
             <div class="login-form" id="vApp" v-cloak>
                 <div class="text-center position-relative mb-4">
-                    <img class="position-relative" width="100" src="/images/logo-md2.png" alt="Guimaras State University" title="Guimaras State University">
+                    <!-- <img class="position-relative" width="100" src="/images/logo-md2.png" alt="Guimaras State University" title="Guimaras State University"> -->
+                    <img class="position-relative" width="100" src="/images/logo-mis-md.png" alt="Guimaras State University" title="Guimaras State University">
                 </div>
                 <h1 class="text-center h6 mb-4">MIS Portal</h1>
                 <div>
@@ -70,27 +71,15 @@
 {{ super() }}
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-    var vApp = new Vue({
+    const vApp = new Vue({
         el: '#vApp',
         delimiters: ["${", "}"],
-        mixins: [
-            window.vuelidate.validationMixin,
-            window.vuelidateExtendMixin,
-        ],
         data: {
             pending: false,
             username: '{{username}}',
             password: '',
             passwordType: 'password',
             recaptchaToken: '',
-        },
-        validations: {
-            username: {
-                required: window.validators.required
-            },
-            password: {
-                required: window.validators.required
-            },
         },
         computed: {
             disabled: function(){
@@ -108,16 +97,11 @@
                 this.passwordType = "password"
             },
             onSubmit: function(){
-                var me = this;
-                me.$v.$touch()
-                if (me.$v.$error) {
-                    alert('Please correct the errors to continue.')
-                } else {
-                    me.pending = true;
-                    me.$nextTick(function() {
-                        me.$refs.form.submit();
-                    });
-                }
+                const me = this;
+                me.pending = true;
+                me.$nextTick(function() {
+                    me.$refs.form.submit();
+                });
             }
         }
     });

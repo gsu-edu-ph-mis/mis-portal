@@ -7,9 +7,29 @@ img {
 }
 
 body {
+    position: relative;
     color: #414141;
     background: hsla(95, 47%, 71%, 1);
     background: linear-gradient(135deg, hsla(95, 47%, 71%, 1) 0%, hsla(168, 41%, 50%, 1) 28%, hsla(184, 62%, 39%, 1) 44%, rgb(37, 117, 182) 54%, hsla(211, 80%, 33%, 1) 100%) fixed;
+}
+
+.bg-animated::before {
+    content:"";
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #106ecc;
+    animation: Animation 10s ease infinite;
+    animation-delay: 5s;
+    opacity: 0;
+}
+
+@keyframes Animation { 
+    0%{opacity: 0.0;}
+    50%{opacity: 0.4;}
+    100%{opacity: 0.0;}
 }
 
 /* Fonts */
@@ -364,6 +384,9 @@ button.btn-eye[data-state="text"] svg:nth-child(2) {
 }
 .floating-menu .buttons .btn-menu:nth-child(4) {
     top: calc(45px * 4);
+}
+.floating-menu .buttons .btn-menu:nth-child(5) {
+    top: calc(45px * 5);
 }
 
 .btn-menu {

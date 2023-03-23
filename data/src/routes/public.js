@@ -17,7 +17,7 @@ let router = express.Router()
 
 router.get('/', async (req, res, next) => {
     try {
-        
+
         res.render('home.html', {});
     } catch (err) {
         next(err);
@@ -26,7 +26,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/about-us', async (req, res, next) => {
     try {
-        
+
         res.render('about-us.html', {});
     } catch (err) {
         next(err);
@@ -56,7 +56,7 @@ router.post('/login', async (req, res, next) => {
         }
 
         let post = req.body;
-
+        let user = null
         if (post.credential) {
 
             const { OAuth2Client } = require('google-auth-library');
@@ -69,54 +69,68 @@ router.post('/login', async (req, res, next) => {
                     audience: CLIENT_ID,
                 });
                 const payload = ticket.getPayload();
-                const userid = payload['sub'];
-                console.log(`payload`, payload)
-                ///
-
+                // const userid = payload['sub'];
+                // console.log(`payload`, payload)
                 /*
-
                 {
-  iss: 'https://accounts.google.com',
-  nbf: 1678458819,
-  aud: '626719409676-33r3r1rcai88462q3p70kj89hshco5s7.apps.googleusercontent.com',
-  sub: '115284064957933519698',
-  hd: 'gsc.edu.ph',
-  email: 'nico.amarilla@gsc.edu.ph',
-  email_verified: true,
-  azp: '626719409676-33r3r1rcai88462q3p70kj89hshco5s7.apps.googleusercontent.com',
-  name: 'Nico Amarilla',
-  picture: 'https://lh3.googleusercontent.com/a/AGNmyxb1kr_FuOm6A5m7DS5plgWj6-sK4I7qCdziqK4z=s96-c',
-  given_name: 'Nico',
-  family_name: 'Amarilla',
-  iat: 1678459119,
-  exp: 1678462719,
-  jti: 'fed5c83dc8ee604fc3bba58b5d987163176e7ed7'
-}
+                    iss: 'https://accounts.google.com',
+                    nbf: 1678458819,
+                    aud: '626719409676-33r3r1rcai88462q3p70kj89hshco5s7.apps.googleusercontent.com',
+                    sub: '115284064957933519698',
+                    hd: 'gsc.edu.ph',
+                    email: 'nico.amarilla@gsc.edu.ph',
+                    email_verified: true,
+                    azp: '626719409676-33r3r1rcai88462q3p70kj89hshco5s7.apps.googleusercontent.com',
+                    name: 'Nico Amarilla',
+                    picture: 'https://lh3.googleusercontent.com/a/AGNmyxb1kr_FuOm6A5m7DS5plgWj6-sK4I7qCdziqK4z=s96-c',
+                    given_name: 'Nico',
+                    family_name: 'Amarilla',
+                    iat: 1678459119,
+                    exp: 1678462719,
+                    jti: 'fed5c83dc8ee604fc3bba58b5d987163176e7ed7'
+                }
                 */
-                return res.send('ok')
+                user = await req.app.locals.db.models.User.findOne({ where: { username: payload.email } })
+                if (!user) {
+                    user = req.app.locals.db.models.User.build({
+                        passwordHash: '',
+                        salt: '',
+                        roles: ['client'],
+                        firstName: payload.given_name,
+                        middleName: '',
+                        lastName: payload.family_name,
+                        email: payload.email,
+                        username: payload.email,
+                        active: true,
+                        //permissions: JSON.stringify(o.permissions),
+                    });
+                    await user.save()
+                }
+                user = await req.app.locals.db.models.User.findOne({ where: { username: payload.email } })
             } catch (err) {
                 console.error(err)
                 throw err
             }
-        }
+        } else {
 
-        let username = lodash.get(post, 'username', '');
-        let password = lodash.trim(lodash.get(post, 'password', ''))
+            let username = lodash.get(post, 'username', '');
+            let password = lodash.trim(lodash.get(post, 'password', ''))
 
-        // Find admin
-        let user = await req.app.locals.db.models.User.findOne({ where: { username: username } })
-        if (!user) {
-            throw new Error('Incorrect username.')
+            // Find admin
+            user = await req.app.locals.db.models.User.findOne({ where: { username: username } })
+            if (!user) {
+                throw new Error('Incorrect username.')
+            }
+
+            // Check password
+            let passwordHash = passwordMan.hashPassword(password, user.salt);
+            if (!timingSafeEqual(Buffer.from(passwordHash, 'utf8'), Buffer.from(user.passwordHash, 'utf8'))) {
+                throw new Error('Incorrect password.');
+            }
         }
 
         if (!user.active) {
             throw new Error('Your account is deactivated.');
-        }
-
-        // Check password
-        let passwordHash = passwordMan.hashPassword(password, user.salt);
-        if (!timingSafeEqual(Buffer.from(passwordHash, 'utf8'), Buffer.from(user.passwordHash, 'utf8'))) {
-            throw new Error('Incorrect password.');
         }
 
         // Save user id to session

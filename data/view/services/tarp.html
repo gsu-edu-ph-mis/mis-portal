@@ -83,8 +83,13 @@
                         <em v-bind:class="showHelp"><small>FB ukon Messenger.</small></em>
                         <input v-model="fb" name="fb" id="fb" type="fb" class="form-control" required>
                     </div>
-                    <div class="text-center">
-                        <button class="btn btn-lg btn-primary">Submit Request</button>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <!-- <div class="cf-turnstile" data-sitekey="0x4AAAAAAADaxF-IHbsdGFvm" data-callback="onTurnstile" data-size="normal"></div> -->
+                        </div>
+                        <div class="col-md-6 text-md-right text-center">
+                            <button class="btn btn-lg btn-primary">Submit Request</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -93,8 +98,9 @@
 {% endblock %}
 {% block scripts %}
 {{ super() }}
+<!-- <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
 <script>
-    var vApp = new Vue({
+    const vApp = new Vue({
         el: '#vApp',
         delimiters: ["${", "}"],
         mixins: [],
@@ -117,6 +123,7 @@
             department: '',
             email: '',
             fb: '',
+            token: '', // turnstile token
         },
         computed: {
             showHelp: function () {
@@ -150,5 +157,8 @@
             }
         }
     });
+    function onTurnstile(token){
+        vApp.token = token
+    }
 </script>
 {% endblock %}
