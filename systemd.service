@@ -1,0 +1,28 @@
+# SystemD Service for MISPortal
+# location: /etc/systemd/system/
+# file: /etc/systemd/system/misportal.service
+# update systemd: sudo systemctl daemon-reload
+# restart: sudo systemctl restart misportal
+# status: sudo systemctl status misportal
+# start-on-boot: sudo systemctl enable misportal
+
+[Unit]
+Description=MISPortal
+
+[Service]
+ExecStart=/usr/bin/node /home/ubuntu/mis-portal/index.js
+
+# Restart service after 10 seconds if node service crashes
+Restart=always
+RestartSec=10
+
+# Output to syslog
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodejs-misportal
+
+# Environmental variables
+Environment=NODE_ENV=live PORT=9101
+
+[Install]
+WantedBy=multi-user.target
