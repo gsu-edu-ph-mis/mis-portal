@@ -44,8 +44,9 @@ let adminsList = require('./install-data/users-list'); // Do not remove semi-col
 
     try {
         let User = require('../data/src/models/user')('User', dbInstance)
+        await User.drop()
         await User.sync()
-
+        
         let logs = []
         let csvRows = ['"username", "password"']
         let promises = lodash.map(adminsList, (o) => {
