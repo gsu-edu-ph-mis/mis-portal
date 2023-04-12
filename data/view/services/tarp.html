@@ -40,7 +40,7 @@
                                 v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em></label>
                         <div class="form-row align-items-center text-center">
                             <div class="col-md-5 d-flex">
-                                <input v-model="width" name="width" type="number" min="1" step="1" class="form-control" required placeholder="Width">
+                                <input v-model="width" name="width" type="number" min="1" step="0.5" class="form-control" required placeholder="Width">
                                 <select v-model="widthUnit" name="widthUnit" id="widthUnit" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
@@ -50,7 +50,7 @@
                                 x
                             </div>
                             <div class="col-md-5 d-flex">
-                                <input v-model="height" name="height" type="number" min="1" step="1" class="form-control" required placeholder="Height">
+                                <input v-model="height" name="height" type="number" min="1" step="0.5" class="form-control" required placeholder="Height">
                                 <select v-model="heightUnit" name="heightUnit" id="height" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
