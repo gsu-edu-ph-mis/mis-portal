@@ -3,6 +3,7 @@
 //// External modules
 const express = require('express')
 const lodash = require('lodash')
+const moment = require('moment')
 const flash = require('kisapmata')
 
 //// Core modules
@@ -50,6 +51,32 @@ router.post('/services/video', async (req, res, next) => {
 
         await mailer.sendVideoEmail(data)
         res.redirect(`/services/thanks`)
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/services/survey', async (req, res, next) => {
+    try {
+        let data = {
+            dateStart: moment().format('YYYY-MM-DD')
+        }
+        res.render('services/survey.html', data);
+    } catch (err) {
+        next(err);
+    }
+});
+router.post('/services/survey', async (req, res, next) => {
+    try {
+        let data = {
+            survey: req.body
+        }
+        let survey = req.app.locals.db.models.Survey.build(data.survey)
+        await survey.save()
+
+        console.log(survey)
+        return res.redirect('/services/thanks')
+        res.render('services/survey-paper.html', data);
     } catch (err) {
         next(err);
     }

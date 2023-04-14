@@ -1,0 +1,32 @@
+{% extends "document.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="login-form">
+            <h1 class="h6">Surveys</h1>
+            <ol>
+                
+            </ol>
+            <table class="table table-sm table-stripe">
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th></th>
+                </tr>
+                {% for survey in surveys %}
+                    <tr>
+                        <td>{{survey.dateVisited|format_date('MMM DD, YYYY')}}</td>
+                        <td>{{survey.name}}</td>
+                        <td>{{survey.contact}}</td>
+                        <td><a href="/surveys/{{survey.id}}/download">Download</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}

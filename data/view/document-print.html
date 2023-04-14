@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="{{app.url}}/css/print.css" />
 </head>
 <body>
-{% block body %}{% endblock %}
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
 <script>
 window.print();  
 </script>
