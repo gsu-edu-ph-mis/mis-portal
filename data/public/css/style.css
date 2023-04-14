@@ -388,6 +388,9 @@ button.btn-eye[data-state="text"] svg:nth-child(2) {
 .floating-menu .buttons .btn-menu:nth-child(5) {
     top: calc(45px * 5);
 }
+.floating-menu .buttons .btn-menu:nth-child(6) {
+    top: calc(45px * 6);
+}
 
 .btn-menu {
     display: flex;

@@ -4,9 +4,6 @@
     <div class="col-12">
         <div class="login-form">
             <h1 class="h6">Surveys</h1>
-            <ol>
-                
-            </ol>
             <table class="table table-sm table-stripe">
                 <tr>
                     <th>Date</th>
@@ -19,7 +16,7 @@
                         <td>{{survey.dateVisited|format_date('MMM DD, YYYY')}}</td>
                         <td>{{survey.name}}</td>
                         <td>{{survey.contact}}</td>
-                        <td><a href="/surveys/{{survey.id}}/download">Download</a></td>
+                        <td><a href="/survey/{{survey.id}}/download">Download</a></td>
                     </tr>
                 {% endfor %}
             </table>

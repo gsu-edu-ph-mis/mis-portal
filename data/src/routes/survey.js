@@ -15,22 +15,30 @@ const middlewares = require('../middlewares');
 // Router
 let router = express.Router()
 
-router.use('/surveys', middlewares.requireAuthUser)
-router.use('/surveys', middlewares.requireAdminUser)
+router.use('/survey', middlewares.requireAuthUser)
+router.use('/survey', middlewares.requireAdminUser)
 
-router.get('/surveys/all', async (req, res, next) => {
+router.get('/survey/all', async (req, res, next) => {
     try {
         let surveys = await req.app.locals.db.models.Survey.findAll()
         let data = {
             surveys: surveys
         }
-        res.render('surveys/all.html', data);
+        res.render('survey/all.html', data);
     } catch (err) {
         next(err);
     }
 });
 
-router.get('/surveys/:surveyId/download', async (req, res, next) => {
+router.get('/survey/thanks', async (req, res, next) => {
+    try {
+        res.render('survey/thanks.html');
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/survey/:surveyId/download', async (req, res, next) => {
     try {
         let survey = await req.app.locals.db.models.Survey.findOne({
             where: {
@@ -46,5 +54,6 @@ router.get('/surveys/:surveyId/download', async (req, res, next) => {
         next(err);
     }
 });
+
 
 module.exports = router;
