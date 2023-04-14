@@ -92,10 +92,14 @@ router.post('/login', async (req, res, next) => {
                 */
                 user = await req.app.locals.db.models.User.findOne({ where: { username: payload.email } })
                 if (!user) {
+                    let roles = ['client']
+                    if(payload.email === 'mis@gsc.edu.ph'){
+                        roles = ['admin']
+                    }
                     user = req.app.locals.db.models.User.build({
                         passwordHash: '',
                         salt: '',
-                        roles: ['client'],
+                        roles: roles,
                         firstName: payload.given_name,
                         middleName: '',
                         lastName: payload.family_name,
