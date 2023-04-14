@@ -25,10 +25,10 @@ module.exports = {
     attachModels: async (sequelize) => {
         try {
             return {
-                Agenda: require('./models/agenda')('Agenda', sequelize),
                 Permission: require('./models/permission')('Permission', sequelize),
                 Role: require('./models/role')('Role', sequelize),
                 User: require('./models/user')('User', sequelize),
+                Survey: require('./models/survey')('Survey', sequelize),
             }
         } catch (error) {
             console.log('Connection error:', error.message)
