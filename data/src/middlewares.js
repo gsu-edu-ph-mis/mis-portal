@@ -172,6 +172,25 @@ module.exports = {
             next(err)
         }
     },
+    requireAdminUser: async (req, res, next) => {
+        try {
+            let authUserId = lodash.get(req, 'session.authUserId')
+            if (!authUserId) {
+                return res.redirect('/login')
+            }
+            let user = await req.app.locals.db.models.User.findOne({
+                where: {
+                    id: authUserId
+                },
+            })
+            if (user.email !== 'mis@gsc.edu.ph') {
+                throw new Error('Admin access required.')
+            }
+            next()
+        } catch (err) {
+            next(err)
+        }
+    },
     /**
      * See: https://expressjs.com/en/api.html#app.locals
      * See: https://expressjs.com/en/api.html#req.app
