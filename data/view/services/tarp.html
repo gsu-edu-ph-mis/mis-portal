@@ -13,34 +13,36 @@
                             <label class="custom-control-label" for="help">Hiligaynon</label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['purpose']" v-on:click="errors.purpose=false">
                         <label for="purpose" class="mr-1">Purpose</label>
                         <em v-bind:class="showHelp"><small>Para sa anu ang tarp?</small></em>
-                        <input v-model="purpose" name="purpose" id="purpose" type="text" class="form-control" required>
+                        <input v-model="purpose" name="purpose" id="purpose" type="text" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['dateStart']" v-on:click="errors.dateStart=false">
                         <label for="dateStart" class="mr-1">Date Needed</label>
                         <em v-bind:class="showHelp"><small>San-o kinahanglan?</small></em>
-                        <input v-model="dateStart" name="dateStart" id="dateStart" type="date" class="form-control" required>
+                        <input v-model="dateStart" name="dateStart" id="dateStart" type="date" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['content']" v-on:click="errors.content=false">
                         <label for="content" class="mr-1">Content</label>
                         <em v-if="!help"><small>Write the textual content of your tarp.</small></em>
                         <em v-bind:class="showHelp"><small>Isulat ang unod sang tarp.</small></em>
-                        <textarea v-model="content" name="content" id="content" class="form-control" required></textarea>
+                        <textarea v-model="content" name="content" id="content" class="form-control"></textarea>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['instructions']" v-on:click="errors.instructions=false">
                         <label for="instructions" class="mr-1">Description</label>
                         <em v-if="!help"><small>Describe the design that you want to achieve.</small></em>
                         <em v-bind:class="showHelp"><small>Anu ang itsura sang desenyo na gusto mo?</small></em>
-                        <textarea v-model="instructions" name="instructions" id="instructions" class="form-control" required></textarea>
+                        <textarea v-model="instructions" name="instructions" id="instructions" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="content">Dimension <em v-if="!help"><small>(Width and Height)</small></em><em
-                                v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em></label>
+                        <label for="content">Dimension 
+                            <em v-if="!help"><small>(Width and Height)</small></em>
+                            <em v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em>
+                        </label>
                         <div class="form-row align-items-center text-center">
-                            <div class="col-md-5 d-flex">
-                                <input v-model="width" name="width" type="number" min="1" step="0.5" class="form-control" required placeholder="Width">
+                            <div class="col-md-5 d-flex" v-bind:data-error="errors['width']" v-on:click="errors.width=false">
+                                <input v-model="width" name="width" type="number" min="1" step="0.5" class="form-control" placeholder="Width">
                                 <select v-model="widthUnit" name="widthUnit" id="widthUnit" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
@@ -49,8 +51,8 @@
                             <div class="col-md-2 pl-3 pr-3">
                                 x
                             </div>
-                            <div class="col-md-5 d-flex">
-                                <input v-model="height" name="height" type="number" min="1" step="0.5" class="form-control" required placeholder="Height">
+                            <div class="col-md-5 d-flex" v-bind:data-error="errors['height']" v-on:click="errors.height=false">
+                                <input v-model="height" name="height" type="number" min="1" step="0.5" class="form-control" placeholder="Height">
                                 <select v-model="heightUnit" name="heightUnit" id="height" class="form-control">
                                     <option value="ft">Feet</option>
                                     <option value="inches">Inches</option>
@@ -58,30 +60,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group" v-bind:data-error="errors['format']" v-on:click="errors.format=false">
+                        <label for="content" class="mr-1">What do you want us to do?</label>
+                        <em v-bind:class="showHelp"><small>Ano ang amon ubrahon?</small></em>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input v-model="format" name="format" value="Layout" type="checkbox" class="custom-control-input" id="layout">
+                                <label class="custom-control-label" for="layout">Layout/Design</label>
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input v-model="format" name="format" value="Printing" type="checkbox" class="custom-control-input" id="Printing">
+                                <label class="custom-control-label" for="Printing">Print</label>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <hr>
                     <h6 class="h6">Requesting Office</h6>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['requestor']" v-on:click="errors.requestor=false">
                         <label for="requestor" class="mr-1">Requesting Person's Name</label>
                         <em v-bind:class="showHelp"><small>Ang pangalan sang naga patigayon.</small></em>
-                        <input v-model="requestor" name="requestor" id="requestor" type="text" class="form-control" required>
+                        <input v-model="requestor" name="requestor" id="requestor" type="text" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['department']" v-on:click="errors.department=false">
                         <label for="department" class="mr-1">Department</label>
                         <em v-bind:class="showHelp"><small>Ang iya na departamento?</small></em>
-                        <input v-model="department" name="department" id="department" type="text" class="form-control" required>
+                        <input v-model="department" name="department" id="department" type="text" class="form-control">
                     </div>
                     <hr>
-                    <h6 class="h6 mb-3"><span class="mr-2">Contact Information</span><em v-if="!help"><small>Please
-                                provide a way for us to contact you.</small></em></h6>
-                    <div class="form-group">
+                    <h6 class="h6 mb-3">
+                        <span class="mr-2">Contact Information</span>
+                        <em v-if="!help"><small>Please provide a way for us to contact you.</small></em>
+                    </h6>
+                    <div class="form-group" v-bind:data-error="errors['email']" v-on:click="errors.email=false">
                         <label for="email" class="mr-1">Email</label>
                         <em v-bind:class="showHelp"><small>Aktibo na email.</small></em>
-                        <input v-model="email" name="email" id="email" type="email" class="form-control" required>
+                        <input v-model="email" name="email" id="email" type="email" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" v-bind:data-error="errors['fb']" v-on:click="errors.fb=false">
                         <label for="fb" class="mr-1">Facebook or Messenger Name</label>
                         <em v-bind:class="showHelp"><small>FB ukon Messenger.</small></em>
-                        <input v-model="fb" name="fb" id="fb" type="fb" class="form-control" required>
+                        <input v-model="fb" name="fb" id="fb" type="fb" class="form-control">
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
@@ -106,8 +125,18 @@
         mixins: [],
         data: {
             errors: {
+                purpose: false,
+                dateStart: false,
+                content: false,
+                instructions: false,
                 format: false,
                 date: false,
+                width: false,
+                height: false,
+                requestor: false,
+                department: false,
+                email: false,
+                fb: false,
             },
             pending: false,
             help: false,
@@ -119,6 +148,7 @@
             widthUnit: 'ft',
             height: 4,
             heightUnit: 'ft',
+            format: [],
             requestor: '',
             department: '',
             email: '',
@@ -142,18 +172,79 @@
             // this.widthUnit = 'ft'
             // this.height = 5
             // this.heightUnit = 'ft'
+            // this.format = ['Layout']
             // this.requestor = 'Nico Amarilla'
             // this.department = 'MIS'
             // this.email = 'nico.amarilla@example.com'
             // this.fb = 'Nico Amarilla'
+            
+            // this.onSubmit()
         },
         methods: {
             onSubmit: function () {
-                const me = this;
-                me.pending = true;
-                me.$nextTick(function () {
-                    me.$refs.form.submit();
-                });
+                try {
+                    const me = this;
+                    Object.keys(this.$data).forEach(key => {
+                        if(typeof this[key] === 'string'){
+                            this[key] = this[key].trim()
+                        }
+
+                    });
+                    if (!me.purpose) {
+                        me.errors['purpose'] = true
+                        throw new Error('Please specify the Purpose.')
+                    }
+                    if (!me.dateStart) {
+                        me.errors['dateStart'] = true
+                        throw new Error('Please specify the Date Needed.')
+                    }
+                    if (!me.content) {
+                        me.errors['content'] = true
+                        throw new Error('Please specify the Content.')
+                    }
+                    if (!me.instructions) {
+                        me.errors['instructions'] = true
+                        throw new Error('Please specify the Instructions.')
+                    }
+                    
+                    if (!me.width) {
+                        me.errors['width'] = true
+                        throw new Error('Please specify the width.')
+                    }
+                    
+                    if (!me.height) {
+                        me.errors['height'] = true
+                        throw new Error('Please specify the height.')
+                    }
+                    if (me.format.length <= 0) {
+                        me.errors['format'] = true
+                        throw new Error('Please choose either layout/design or printing. Or both.')
+                    }
+                    
+                    if (!me.requestor) {
+                        me.errors['requestor'] = true
+                        throw new Error('Please specify the requestor.')
+                    }
+                    if (!me.department) {
+                        me.errors['department'] = true
+                        throw new Error('Please specify the department.')
+                    }
+                    if (!me.email) {
+                        me.errors['email'] = true
+                        throw new Error('Please specify the email.')
+                    }
+                    if (!me.fb) {
+                        me.errors['fb'] = true
+                        throw new Error('Please specify the Facebook or Messenger Name.')
+                    }
+
+                    me.pending = true;
+                    me.$nextTick(function () {
+                        me.$refs.form.submit();
+                    });
+                } catch (err) {
+                    alert(err)
+                }
             }
         }
     });

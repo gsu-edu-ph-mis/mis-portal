@@ -28,6 +28,7 @@ router.get('/services/tarp', async (req, res, next) => {
 router.post('/services/tarp', async (req, res, next) => {
     try {
         let data = req.body
+        data.format = !Array.isArray(data.format) ? [data.format] : data.format
 
         await mailer.sendTarpEmail(data)
         res.redirect(`/services/thanks`)
