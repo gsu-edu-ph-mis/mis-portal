@@ -76,8 +76,7 @@ router.post('/services/survey', async (req, res, next) => {
         await survey.save()
 
         console.log(survey)
-        return res.redirect('/services/thanks')
-        res.render('services/survey-paper.html', data);
+        res.redirect('/services/thanks')
     } catch (err) {
         next(err);
     }

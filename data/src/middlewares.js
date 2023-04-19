@@ -272,4 +272,25 @@ module.exports = {
             next(error);
         }
     },
+    getSurvey: (opts) => {
+        return async (req, res, next) => {
+            try {
+                let _opts = {
+                    raw: true
+                }
+                let options = {..._opts, ...opts}
+                let survey = await req.app.locals.db.models.Survey.findOne({
+                    where: {
+                        id: req.params?.surveyId
+                    },
+                    ...options
+                })
+                if(!survey) throw new Error('Survey not found')
+                res.survey = survey
+                next();
+            } catch (error) {
+                next(error);
+            }
+        }
+    },
 }
