@@ -82,7 +82,7 @@ router.post('/services/survey', async (req, res, next) => {
         await survey.save()
 
         console.log(survey)
-        res.redirect('/services/thanks')
+        res.redirect('/survey/thanks')
     } catch (err) {
         next(err);
     }
