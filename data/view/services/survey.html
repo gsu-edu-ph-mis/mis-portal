@@ -64,11 +64,32 @@
                         <option value="Female">Female</option>
                     </select>
                 </div>
-
-                <div class="form-group">
+                <div class="form-group" v-bind:data-error="errors['service']" v-on:click="errors.service=false">
                     <label for="service" class="mr-1">Service Availed </label>
-                    <input v-model="service" name="service" id="service" type="text" class="form-control" required>
+                    <div class="form-group">
+                        <div class="custom-control custom-switch">
+                            <input v-model="service" name="service" value="Tarpaulin" type="checkbox" class="custom-control-input" id="Tarpaulin">
+                            <label class="custom-control-label" for="Tarpaulin">Tarpaulin</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input v-model="service" name="service" value="Photo/Video Documentation" type="checkbox" class="custom-control-input" id="documentation">
+                            <label class="custom-control-label" for="documentation">Photo/Video Documentation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input v-model="service" name="service" value="Online Posting" type="checkbox" class="custom-control-input" id="online">
+                            <label class="custom-control-label" for="online">Online Posting</label>
+                        </div>
+                        
+                        <div class="custom-control custom-switch">
+                            <input v-model="service" name="service" value="Others" type="checkbox" class="custom-control-input" id="serviceOthers">
+                            <label class="custom-control-label" for="serviceOthers">Others</label>
+                        </div>
+                        <div v-if="service.includes('Others')">
+                            <input v-model="serviceOthers" type="text" name="serviceOthers" class="form-control" placeholder="Please specify..." />
+                        </div>
+                    </div>
                 </div>
+                
                 <hr>
                 <div class="form-group">
                     <label for="howLong1" class="mr-1">How long will the concerned staff/office respond to your
@@ -387,6 +408,7 @@
         data: {
             errors: {
                 date: false,
+                service: false,
             },
             scores: [2, 4, 6, 8, 10],
             scores2: [1, 2, 3, 4, 5],
@@ -491,7 +513,8 @@
             birthDate: '',
             gender: '',
             contact: '',
-            service: '',
+            service: [],
+            serviceOthers:'',
 
             howLong: '',
             answerQuality: '',
@@ -535,7 +558,7 @@
             // this.respondentSelect = 'Staff'
             // this.birthDate = '1990-01-01'
             // this.gender = 'Male'
-            // this.service = 'Tarp'
+            // this.service = []
             // this.howLong = 'Immediately'
             // this.answerQuality = 'Gave a good solution'
             // this.environment = 'Very clean'
@@ -597,11 +620,30 @@
                 }, 200)
             },
             onSubmit: function () {
-                const ME = this;
-                ME.pending = true;
-                ME.$nextTick(function () {
-                    ME.$refs.form.submit();
-                });
+                try {
+                    const me = this;
+                    Object.keys(this.$data).forEach(key => {
+                        if(typeof this[key] === 'string'){
+                            this[key] = this[key].trim()
+                        }
+                    });
+
+                    if (me.service.length <= 0) {
+                        me.errors['service'] = true
+                        throw new Error('Please specify Service Availed.')
+                    } else {
+                        if(me.service.includes('Others') && !me.serviceOthers){
+                            me.errors['service'] = true
+                            throw new Error('Please specify the other services.')
+                        }
+                    }
+                    me.pending = true;
+                    me.$nextTick(function () {
+                        me.$refs.form.submit();
+                    });
+                } catch (err) {
+                    alert(err)
+                }
             }
         }
     });

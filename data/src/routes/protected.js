@@ -72,6 +72,12 @@ router.post('/services/survey', async (req, res, next) => {
         let data = {
             survey: req.body
         }
+        data.survey.service = !Array.isArray(data.survey.service) ? [data.survey.service] : data.survey.service
+        if (data.survey.serviceOthers) {
+            let i = data.survey.service.indexOf('Others')
+            if (i > -1) data.survey.service[i] = (data.survey.serviceOthers)
+        }
+        data.survey.service = data?.survey?.service?.join(', ')
         let survey = req.app.locals.db.models.Survey.build(data.survey)
         await survey.save()
 
