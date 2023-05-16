@@ -47,7 +47,7 @@ module.exports = {
             from: `MIS Robot <misbot-noreply@gsu.edu.ph>`,
             to: 'mis@gsc.edu.ph',
             subject: `Tarpaulin Design Request - ${templateVars['purpose']}`,
-            text: nunjucksEnv.render('emails/video.txt', templateVars),
+            text: nunjucksEnv.render('emails/tarp.txt', templateVars),
             html: nunjucksEnv.render('emails/tarp.html', templateVars),
         }
         let info = await transport2.sendMail(mailOptions)

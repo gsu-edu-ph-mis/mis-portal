@@ -74,6 +74,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group" v-bind:data-error="errors['quantity']" v-on:click="errors.quantity=false">
+                        <label for="quantity" class="mr-1">Quantity</label>
+                        <input v-model="quantity" name="quantity" type="number" min="1" step="1" class="form-control" placeholder="Quantity">
+                    </div>
                     
                     <hr>
                     <h6 class="h6">Requesting Office</h6>
@@ -133,6 +137,7 @@
                 date: false,
                 width: false,
                 height: false,
+                quantity: false,
                 requestor: false,
                 department: false,
                 email: false,
@@ -148,6 +153,7 @@
             widthUnit: 'ft',
             height: 4,
             heightUnit: 'ft',
+            quantity: 1,
             format: [],
             requestor: '',
             department: '',
@@ -164,19 +170,20 @@
             }
         },
         mounted: function () {
-            // this.purpose = 'Welcome Sec Popoy'
-            // this.dateStart = '2023-03-22'
-            // this.content = 'GSU welcomes CHED national.'
-            // this.instructions = 'Welcome tarp with photo and greetings.'
-            // this.width = 4
-            // this.widthUnit = 'ft'
-            // this.height = 5
-            // this.heightUnit = 'ft'
-            // this.format = ['Layout']
-            // this.requestor = 'Nico Amarilla'
-            // this.department = 'MIS'
-            // this.email = 'nico.amarilla@example.com'
-            // this.fb = 'Nico Amarilla'
+            this.purpose = 'Welcome Sec Popoy'
+            this.dateStart = '2023-03-22'
+            this.content = 'GSU welcomes CHED national.'
+            this.instructions = 'Welcome tarp with photo and greetings.'
+            this.width = 4
+            this.widthUnit = 'ft'
+            this.height = 5
+            this.heightUnit = 'ft'
+            this.quantity = 1
+            this.format = ['Layout']
+            this.requestor = 'Nico Amarilla'
+            this.department = 'MIS'
+            this.email = 'nico.amarilla@example.com'
+            this.fb = 'Nico Amarilla'
             
             // this.onSubmit()
         },
@@ -219,7 +226,11 @@
                         me.errors['format'] = true
                         throw new Error('Please choose either layout/design or printing. Or both.')
                     }
-                    
+                    if (!me.quantity) {
+                        me.errors['quantity'] = true
+                        throw new Error('Please specify the Quantity.')
+                    }
+
                     if (!me.requestor) {
                         me.errors['requestor'] = true
                         throw new Error('Please specify the requestor.')
