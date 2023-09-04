@@ -30,7 +30,7 @@ module.exports = {
         templateVars['previewText'] = `${templateVars['event']}...`
         let mailOptions = {
             from: `MIS Robot <misbot-noreply@gsu.edu.ph>`,
-            to: 'mis@gsc.edu.ph',
+            to: 'mis@gsu.edu.ph',
             subject: `Photo/Video Documentation Request - ${templateVars['event']}`,
             text: nunjucksEnv.render('emails/video.txt', templateVars),
             html: nunjucksEnv.render('emails/video.html', templateVars),
@@ -45,7 +45,7 @@ module.exports = {
         templateVars['previewText'] = `${templateVars['purpose']}...`
         let mailOptions = {
             from: `MIS Robot <misbot-noreply@gsu.edu.ph>`,
-            to: 'mis@gsc.edu.ph',
+            to: 'mis@gsu.edu.ph',
             subject: `Tarpaulin Design Request - ${templateVars['purpose']}`,
             text: nunjucksEnv.render('emails/tarp.txt', templateVars),
             html: nunjucksEnv.render('emails/tarp.html', templateVars),

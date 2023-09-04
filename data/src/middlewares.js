@@ -183,7 +183,7 @@ module.exports = {
                     id: authUserId
                 },
             })
-            if (user.email !== 'mis@gsc.edu.ph') {
+            if (user.email !== 'mis@gsu.edu.ph') {
                 throw new Error('Admin access required.')
             }
             next()
