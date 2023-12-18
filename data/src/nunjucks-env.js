@@ -71,5 +71,9 @@ env.addFilter('join', (value, sep) => {
     return lodash.join(value, sep);
 });
 
+env.addFilter('pixelScaled', (value, scale = 1) => {
+    return parseFloat(value) * scale;
+});
+
 //// Export
 module.exports = env;

@@ -1,22 +1,20 @@
 /**
- * Insert default admin users.
- * Usage: node scripts/install-db.js
+ * Clear
+ * Usage: node scripts/reset-tarp.js
  */
 //// Core modules
-const fs = require('fs');
 const path = require('path');
 
 //// External modules
 const lodash = require('lodash');
-const pigura = require('pigura');
 
 //// Modules
-const passwordMan = require('../data/src/password-man');
+const pigura = require('pigura');
 
 
 //// First things first
 //// Save full path of our root app directory and load config and credentials
-global.APP_DIR = path.resolve(__dirname + '/../').replace(/\\/g, '/'); // Turn back slash to slash for cross-platform compat
+global.APP_DIR = path.resolve(__dirname+'/../').replace(/\\/g, '/'); // Turn back slash to slash for cross-platform compat
 global.ENV = lodash.get(process, 'env.NODE_ENV', 'dev')
 
 const configLoader = new pigura.ConfigLoader({
@@ -38,19 +36,20 @@ global.CRED = credLoader.getConfig()
 const dbConn = require('../data/src/db-connect');
 
 
-; (async () => {
+(async ()=>{
     let dbInstance = await dbConn.connect()
 
     try {
-        // const dbModels = dbConn.attachModels(dbInstance)
-        if(ENV==='dev'){
-            // Sync all defined models to the DB.
-            // await dbInstance.sync({ force: true }) // DROP ALL!
-            await dbInstance.sync()
-        }
+        let Tarp = require('../data/src/models/tarp')('Tarp', dbInstance)
+        await Tarp.drop()
+        await Tarp.sync()
+
+        console.log('Clearing tarp collection...')
+
     } catch (err) {
-        console.log(err)
+        console.error(err)
     } finally {
         dbInstance.close();
     }
 })()
+

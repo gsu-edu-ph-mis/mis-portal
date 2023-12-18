@@ -7,9 +7,9 @@ const express = require('express');
 
 // Routes
 let router = express.Router();
+router.use(require('./routes/admin'));
 router.use(require('./routes/public'));
 router.use(require('./routes/protected'));
-router.use(require('./routes/survey'));
 
 // 404 Page
 router.use((req, res) => {

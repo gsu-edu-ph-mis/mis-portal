@@ -18,10 +18,10 @@
                         <em v-bind:class="showHelp"><small>Para sa anu ang tarp?</small></em>
                         <input v-model="purpose" name="purpose" id="purpose" type="text" class="form-control">
                     </div>
-                    <div class="form-group" v-bind:data-error="errors['dateStart']" v-on:click="errors.dateStart=false">
-                        <label for="dateStart" class="mr-1">Date Needed</label>
+                    <div class="form-group" v-bind:data-error="errors['dateNeeded']" v-on:click="errors.dateNeeded=false">
+                        <label for="dateNeeded" class="mr-1">Date Needed</label>
                         <em v-bind:class="showHelp"><small>San-o kinahanglan?</small></em>
-                        <input v-model="dateStart" name="dateStart" id="dateStart" type="date" class="form-control">
+                        <input v-model="dateNeeded" name="dateNeeded" id="dateNeeded" type="date" class="form-control">
                     </div>
                     <div class="form-group" v-bind:data-error="errors['content']" v-on:click="errors.content=false">
                         <label for="content" class="mr-1">Content</label>
@@ -40,23 +40,36 @@
                             <em v-if="!help"><small>(Width and Height)</small></em>
                             <em v-bind:class="showHelp"><small>(Sangkad kag Kata-ason)</small></em>
                         </label>
-                        <div class="form-row align-items-center text-center">
-                            <div class="col-md-5 d-flex" v-bind:data-error="errors['width']" v-on:click="errors.width=false">
-                                <input v-model="width" name="width" type="number" min="1" step="0.5" class="form-control" placeholder="Width">
-                                <select v-model="widthUnit" name="widthUnit" id="widthUnit" class="form-control">
-                                    <option value="ft">Feet</option>
-                                    <option value="inches">Inches</option>
-                                </select>
+                        <div>
+                            <div class="form-row align-items-center text-center">
+                                <div class="col-md-5 d-flex" v-bind:data-error="errors['width']" v-on:click="errors.width=false">
+                                    <input v-model="width" name="width" type="number" min="1" step="0.5" class="form-control" placeholder="Width">
+                                    <select v-model="widthUnit" name="widthUnit" id="widthUnit" class="form-control">
+                                        <option value="ft">Feet</option>
+                                        <option value="inches">Inches</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 pl-3 pr-3">
+                                    x
+                                </div>
+                                <div class="col-md-5 d-flex" v-bind:data-error="errors['height']" v-on:click="errors.height=false">
+                                    <input v-model="height" name="height" type="number" min="1" step="0.5" class="form-control" placeholder="Height">
+                                    <select v-model="heightUnit" name="heightUnit" id="height" class="form-control">
+                                        <option value="ft">Feet</option>
+                                        <option value="inches">Inches</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-2 pl-3 pr-3">
-                                x
-                            </div>
-                            <div class="col-md-5 d-flex" v-bind:data-error="errors['height']" v-on:click="errors.height=false">
-                                <input v-model="height" name="height" type="number" min="1" step="0.5" class="form-control" placeholder="Height">
-                                <select v-model="heightUnit" name="heightUnit" id="height" class="form-control">
-                                    <option value="ft">Feet</option>
-                                    <option value="inches">Inches</option>
-                                </select>
+                            <div v-if="(width && height) && heightUnit === widthUnit" class="form-row align-items-center text-center">
+                                <div class="col-md-12 text-center">
+                                    <div class="m-3">
+                                        <div class="" v-bind:style="'width: '+ (width * 40) +'px; height: '+ (height * 40) +'px; border: 3px solid #fff; border-radius:2px; position: relative; margin: 0 auto; display: inline-block;'">
+                                            <div style="position: absolute; left: 2px; top: 50%; transform: translate(0, -50%);">${height} </div>
+                                            <div style="position: absolute; left: 50%; top: 2px; transform: translate(-50%, 0);">${width} </div>
+                                        </div>
+                                        <div><small><em>Estimated Dimension Preview</em></small></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -130,7 +143,7 @@
         data: {
             errors: {
                 purpose: false,
-                dateStart: false,
+                dateNeeded: false,
                 content: false,
                 instructions: false,
                 format: false,
@@ -146,10 +159,10 @@
             pending: false,
             help: false,
             purpose: '',
-            dateStart: '',
+            dateNeeded: '',
             content: '',
             instructions: '',
-            width: 5,
+            width: 8,
             widthUnit: 'ft',
             height: 4,
             heightUnit: 'ft',
@@ -169,21 +182,35 @@
                 return 'no-help'
             }
         },
+        watch: {
+            width: function(cur, prev){
+                if(this.widthUnit === 'inches' && cur >= 12 && prev < 12){
+                    this.widthUnit = 'ft'
+                    this.width = this.width / 12
+                }
+            },
+            height: function(cur, prev){
+                if(this.heightUnit === 'inches' && cur >= 12 && prev < 12){
+                    this.heightUnit = 'ft'
+                    this.height = this.height / 12
+                }
+            }
+        },
         mounted: function () {
-            // this.purpose = 'Welcome Sec Popoy'
-            // this.dateStart = '2023-03-22'
-            // this.content = 'GSU welcomes CHED national.'
-            // this.instructions = 'Welcome tarp with photo and greetings.'
+            this.purpose = 'Welcome Sec Popoy'
+            this.dateNeeded = '2023-03-22'
+            this.content = 'GSU welcomes CHED national.'
+            this.instructions = 'Welcome tarp with photo and greetings.'
             // this.width = 4
             // this.widthUnit = 'ft'
             // this.height = 5
             // this.heightUnit = 'ft'
-            // this.quantity = 1
-            // this.format = ['Layout']
-            // this.requestor = 'Nico Amarilla'
-            // this.department = 'MIS'
-            // this.email = 'nico.amarilla@example.com'
-            // this.fb = 'Nico Amarilla'
+            this.quantity = 1
+            this.format = ['Layout']
+            this.requestor = 'Nico Amarilla'
+            this.department = 'MIS'
+            this.email = 'nico.amarilla@example.com'
+            this.fb = 'Nico Amarilla'
             
             // this.onSubmit()
         },
@@ -200,8 +227,8 @@
                         me.errors['purpose'] = true
                         throw new Error('Please specify the Purpose.')
                     }
-                    if (!me.dateStart) {
-                        me.errors['dateStart'] = true
+                    if (!me.dateNeeded) {
+                        me.errors['dateNeeded'] = true
                         throw new Error('Please specify the Date Needed.')
                     }
                     if (!me.content) {

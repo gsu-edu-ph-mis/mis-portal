@@ -6,7 +6,7 @@ const access = require('acrb')
 const lodash = require('lodash')
 
 //// Modules
-// const uploader = require('./uploader')
+const uploader = require('./uploader')
 
 module.exports = {
     rateLimit: async (req, res, next) => {
@@ -287,6 +287,48 @@ module.exports = {
                 })
                 if(!survey) throw new Error('Survey not found')
                 res.survey = survey
+                next();
+            } catch (error) {
+                next(error);
+            }
+        }
+    },
+    getTarp: (opts) => {
+        return async (req, res, next) => {
+            try {
+                let _opts = {
+                    raw: false
+                }
+                let options = {..._opts, ...opts}
+                let tarp = await req.app.locals.db.models.Tarp.findOne({
+                    where: {
+                        id: req.params?.tarpId
+                    },
+                    ...options
+                })
+                if(!tarp) throw new Error('Tarp not found')
+                res.tarp = tarp
+                next();
+            } catch (error) {
+                next(error);
+            }
+        }
+    },
+    getTarpByUid: (opts) => {
+        return async (req, res, next) => {
+            try {
+                let _opts = {
+                    raw: false
+                }
+                let options = {..._opts, ...opts}
+                let tarp = await req.app.locals.db.models.Tarp.findOne({
+                    where: {
+                        uid: req.params?.tarpUid
+                    },
+                    ...options
+                })
+                if(!tarp) throw new Error('Tarp not found')
+                res.tarp = tarp
                 next();
             } catch (error) {
                 next(error);

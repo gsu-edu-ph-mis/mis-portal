@@ -59,5 +59,15 @@ module.exports = {
         const buf = buffer.Buffer.alloc(length / 2)
         crypto.randomFillSync(buf)
         return buf.toString('hex').toUpperCase()
-    }
+    },
+    genPasscode: (length = 10) => { 
+        let numbers = "0123456789"
+        numbers = numbers.split('')
+
+        let passcode = ''
+        for(let x = 0; x < length; x++){
+            passcode += numbers[crypto.randomInt(0, numbers.length)]
+        }
+        return passcode
+    },
 }

@@ -1,0 +1,60 @@
+{% extends "document.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-12 pt-5">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active font-weight-bold" href="/admin/tarp/all">Tarps</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/survey/all">Surveys</a>
+            </li>
+        </ul>
+        <div class="tab-content p-3" style="border-radius:0 0 5px 5px;">
+            {% include 'parts/flash.html' %}
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-6">
+                </div>
+                <div class="col-md-6">
+                    <form action="/admin/tarp/all">
+                        <input value="{{s}}" type="search" placeholder="Search" name="s" class="form-control">
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive mb-0">
+                <table class="table table-sm table-striped mb-0">
+                    <tr>
+                        <th width="2%">ID</th>
+                        <th width="15%" class="d-none d-md-table-cell">Created</th>
+                        <th width="10%">Needed</th>
+                        <th>Purpose</th>
+                        <th class="d-none d-md-table-cell">Requestor</th>
+                        <th class="d-none d-md-table-cell">Status</th>
+                        <th width="20%"></th>
+                    </tr>
+                    {% for tarp in tarps %}
+                        <tr>
+                            <td>{{tarp.id}}</td>
+                            <td class="small d-none d-md-table-cell">{{tarp.createdAt|format_date('MMM DD, YYYY hh:mm A')}}</td>
+                            <td class="small">{{tarp.dateNeeded|format_date('MMM DD, YYYY')}}</td>
+                            <td>{{tarp.purpose}}</td>
+                            <td class="d-none d-md-table-cell">
+                                {{tarp.requestor}}
+                                <!-- <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>FB</title><path fill="#0866ff" d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" /></svg> {{tarp.fb}} <br> -->
+                                <!-- <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>gmail</title><path fill="#ea4335" d="M20,18H18V9.25L12,13L6,9.25V18H4V6H5.2L12,10.25L18.8,6H20M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" /></svg> {{tarp.email}} <br> -->
+                            </td>
+                            <td class="d-none d-md-table-cell">{{tarp.status}}</td>
+                            <td class="text-right">
+                                <a href="/admin/tarp/{{tarp.id}}">View</a> | <a class="text-danger font-weight-bold" href="/admin/tarp/{{tarp.id}}/delete">✗</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock %}

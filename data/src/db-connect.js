@@ -29,6 +29,7 @@ module.exports = {
                 Role: require('./models/role')('Role', sequelize),
                 User: require('./models/user')('User', sequelize),
                 Survey: require('./models/survey')('Survey', sequelize),
+                Tarp: require('./models/tarp')('Tarp', sequelize),
             }
         } catch (error) {
             console.log('Connection error:', error.message)
