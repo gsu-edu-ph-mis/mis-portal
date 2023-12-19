@@ -59,7 +59,7 @@ router.post('/services/tarp', async (req, res, next) => {
         //     expiredAt: moment(tarp.dateNeeded).add(1, 'month').toDate()
         // });
 
-        // await mailer.sendTarpEmail(data)
+        await mailer.sendTarpEmail(data)
         res.redirect(`/services/tarp/thanks`)
     } catch (err) {
         next(err);
