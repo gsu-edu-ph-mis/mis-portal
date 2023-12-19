@@ -41,7 +41,7 @@ const dbConn = require('../data/src/db-connect');
 
     try {
         let Survey = require('../data/src/models/survey')('Survey', dbInstance)
-        await Survey.drop()
+        // await Survey.drop()
         await Survey.sync()
 
         console.log('Clearing survey collection...')

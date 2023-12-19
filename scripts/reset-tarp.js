@@ -41,7 +41,7 @@ const dbConn = require('../data/src/db-connect');
 
     try {
         let Tarp = require('../data/src/models/tarp')('Tarp', dbInstance)
-        await Tarp.drop()
+        // await Tarp.drop()
         await Tarp.sync()
 
         console.log('Clearing tarp collection...')
