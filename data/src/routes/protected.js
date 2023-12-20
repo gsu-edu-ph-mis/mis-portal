@@ -5,6 +5,7 @@ const express = require('express')
 const lodash = require('lodash')
 const moment = require('moment')
 const flash = require('kisapmata')
+const { Sequelize } = require('sequelize')
 
 //// Core modules
 
@@ -31,9 +32,26 @@ router.post('/services/tarp', async (req, res, next) => {
     try {
         let data = req.body
 
+        // Find all tarps that start with the uid that is about to be generated
+        let uidRand = moment(data.dateNeeded).format('YYMMDD')
+        let tarps = await req.app.locals.db.models.Tarp.findAll({
+            where: {
+                uid: {
+                    [Sequelize.Op.like]: `${uidRand}%`
+                }
+            }
+        })
 
-        // console.log(data)
-
+        let uids = tarps.map(a => a.uid)
+        let unique = false
+        let uid = ``
+        let counter = 0
+        while(!unique){
+            counter++
+            uid = `${uidRand}${passwordMan.genPasscode(3)}`
+            unique = !uids.includes(uid)
+        }
+        
         let tarp = await req.app.locals.db.models.Tarp.create({
             purpose: data.purpose,
             dateNeeded: data.dateNeeded,
@@ -50,16 +68,10 @@ router.post('/services/tarp', async (req, res, next) => {
             email: data.email,
             fb: data.fb,
             status: 'Pending',
-            uid: passwordMan.genPasscode(),
+            uid: uid,
         });
 
-        // await req.app.locals.db.models.Passcode.create({
-        //     tarpId: tarp.id,
-        //     code: passwordMan.genPasscode(),
-        //     expiredAt: moment(tarp.dateNeeded).add(1, 'month').toDate()
-        // });
-
-        await mailer.sendTarpEmail(data)
+        await mailer.sendTarpEmail(tarp)
         res.redirect(`/services/tarp/thanks`)
     } catch (err) {
         next(err);
@@ -134,7 +146,7 @@ router.get('/services/thanks', async (req, res, next) => {
     }
 });
 
-router.get('/services/tarp/:tarpUid/attach', middlewares.getTarpByUid(), async (req, res, next) => {
+router.get(['/services/tarp/:tarpUid', '/services/tarp/:tarpUid/attach'], middlewares.getTarpByUid(), async (req, res, next) => {
     try {
         let tarp = res.tarp
         

@@ -24,7 +24,7 @@
             <div class="table-responsive mb-0">
                 <table class="table table-sm table-striped mb-0">
                     <tr>
-                        <th width="2%">ID</th>
+                        <th width="5%">Code</th>
                         <th width="15%" class="d-none d-md-table-cell">Created</th>
                         <th width="10%">Needed</th>
                         <th>Purpose</th>
@@ -34,7 +34,7 @@
                     </tr>
                     {% for tarp in tarps %}
                         <tr>
-                            <td>{{tarp.id}}</td>
+                            <td class="small d-none d-md-table-cell">{{tarp.uid}}</td>
                             <td class="small d-none d-md-table-cell">{{tarp.createdAt|format_date('MMM DD, YYYY hh:mm A')}}</td>
                             <td class="small">{{tarp.dateNeeded|format_date('MMM DD, YYYY')}}</td>
                             <td>{{tarp.purpose}}</td>
