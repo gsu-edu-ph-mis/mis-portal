@@ -48,6 +48,7 @@ router.get('/admin/tarp/all', async (req, res, next) => {
         //     tarp.dateNeeded = moment(tarp.dateNeeded).format('YYYY-MM-DD')
         //     return tarp
         // })
+        
         let data = {
             tarps: tarps,
             s: s,
@@ -63,7 +64,7 @@ router.get('/admin/tarp/all', async (req, res, next) => {
 router.get('/admin/tarp/:tarpId', middlewares.getTarp(), async (req, res, next) => {
     try {
         let tarp = res.tarp
-        let qrPayload = `${CONFIG.app.url}/services/tarp/${tarp.uid}/attach`
+        let qrPayload = `${CONFIG.app.url}/services/tarp/${tarp.uid}`
         let qrCode = qr.imageSync(qrPayload, { size: 10, type: 'png', margin: 1 })
 
         // Make white transparent
