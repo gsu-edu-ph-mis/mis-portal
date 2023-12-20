@@ -7,11 +7,11 @@
             <template v-if="tarp.status === 'Pending'">
                 <div class="alert alert-warning text-center h2">Tarp not yet printed.</div>
                 <div class="text-center">
-                    <a href="" class="btn btn-primary">Refresh</a>
+                    <a href="" class="btn btn-primary">Check Again</a>
                 </div>
             </template>
             <template v-if="tarp.status === 'Printed'">
-                <div class="alert alert-success text-center h2">Tarp printed. Please claim at the MIS Office.</div>
+                <div class="alert alert-success text-center h2">Tarp printed. Please claim.</div>
                 <div class="table-responsive">
                     <table class="table table-sm table-striped">
                         <tr>
