@@ -71,7 +71,7 @@ router.post('/services/tarp', async (req, res, next) => {
             uid: uid,
         });
 
-        await mailer.sendTarpEmail(tarp)
+        await mailer.sendTarpEmail(tarp.toJSON())
         res.redirect(`/services/tarp/thanks`)
     } catch (err) {
         next(err);
